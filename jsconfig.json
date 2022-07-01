@@ -8,6 +8,9 @@
             "@pages/*": [
                 "./src/pages/*"
             ],
+            "@prisma/*": [
+                "./src/prisma/*"
+            ],
             "@styles/*": [
                 "./src/styles/*"
             ]

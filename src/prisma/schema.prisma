@@ -1,0 +1,51 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Client {
+  id String @id @unique @default(uuid())
+}
+
+model Location {
+  id   String @id @unique @default(uuid())
+  nome String @unique
+  uf   Estados
+}
+
+enum Estados {
+  AC
+  AL
+  AP
+  AM
+  BA
+  CE
+  ES
+  GO
+  MA
+  MT
+  MS
+  MG
+  PA
+  PB
+  PR
+  PE
+  PI
+  RJ
+  RN
+  RS
+  RO
+  RR
+  SC
+  SP
+  SE
+  TO
+  DF
+}
