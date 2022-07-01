@@ -8,8 +8,8 @@
             "@pages/*": [
                 "./src/pages/*"
             ],
-            "@prisma/*": [
-                "./src/prisma/*"
+            "@prismaClient": [
+                "./src/prisma/client.js"
             ],
             "@styles/*": [
                 "./src/styles/*"
