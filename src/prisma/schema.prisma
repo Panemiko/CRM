@@ -11,18 +11,39 @@ datasource db {
 }
 
 model Client {
-  id String @id @unique @default(uuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id           String       @id @unique @default(uuid())
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  name         String
+  address      String
+  birth        DateTime     @default(now())
+  gender       Gender
+  maritalState MaritalState
+  phone        String
+  occupation   String
+  notes        String
 }
 
 model Location {
   id   String @id @unique @default(uuid())
   nome String @unique
-  uf   Estados
+  uf   State
 }
 
-enum Estados {
+enum Gender {
+  Masculino
+  Feminino
+}
+
+enum MaritalState {
+  Solteiro
+  Casado
+  Separado
+  Divorciado
+  Viuvo
+}
+
+enum State {
   AC
   AL
   AP
