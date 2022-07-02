@@ -2,7 +2,7 @@ import prisma from '@prismaClient'
 
 export default class GetClientUseCase {
     async execute(page, clientQuery) {
-        const clients = prisma.client.findMany({
+        const clients = await prisma.client.findMany({
             where: {
                 ...clientQuery,
             },
