@@ -14,20 +14,20 @@ model Client {
   id           String       @id @unique @default(uuid())
   createdAt    DateTime     @default(now())
   updatedAt    DateTime     @updatedAt
-  name         String
-  address      String
+  name         String       @default("")
+  address      String       @default("")
   birth        DateTime     @default(now())
-  gender       Gender
-  maritalState MaritalState
-  phone        String
-  occupation   String
-  notes        String
+  gender       Gender       @default(Masculino)
+  maritalState MaritalState @default(Solteiro)
+  phone        String       @default("")
+  occupation   String       @default("")
+  notes        String       @default("")
 }
 
 model Location {
   id   String @id @unique @default(uuid())
-  nome String @unique
-  uf   State
+  nome String @unique @default("")
+  uf   State @default(RS)
 }
 
 enum Gender {
