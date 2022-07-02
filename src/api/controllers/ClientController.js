@@ -2,6 +2,7 @@ import Controller from './Controller'
 import GetClientUseCase from '@api/use-cases/GetClientsUseCase'
 import CreateClientUseCase from '@api/use-cases/CreateClientUseCase'
 import EditClientUseCase from '@api/use-cases/EditClientUseCase'
+import DeleteClientUseCase from '@api/use-cases/DeleteClientUseCase'
 
 export default class ClientController {
     async execute(req, res) {
@@ -34,6 +35,14 @@ export default class ClientController {
             return Controller.handleResponse(
                 res,
                 await new EditClientUseCase().execute(id, client)
+            )
+        } else if (req.method === 'DELETE') {
+            const { id } = req.body
+            if (!id) return Controller.handleResponse(res, { code: 400 })
+
+            return Controller.handleResponse(
+                res,
+                await new DeleteClientUseCase().execute(id)
             )
         } else return Controller.handleResponse(req, { code: 405 })
     }
