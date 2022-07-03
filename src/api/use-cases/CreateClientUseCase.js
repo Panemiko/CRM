@@ -1,10 +1,10 @@
 import prisma from '@prismaClient'
 
 export default class CreateClientUseCase {
-    async execute(clientWithoutId) {
+    async execute(clientSanitized) {
         const client = await prisma.client.create({
             data: {
-                ...clientWithoutId,
+                ...clientSanitized,
             },
         })
 
