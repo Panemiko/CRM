@@ -2,6 +2,12 @@ import React from 'react'
 import useApi from '@hooks/useApi'
 
 export default function useApplicationContext() {
+    const alert = useAlertContext()
+    const clientId = useClientIdContext()
+    const modal = useModalContext()
+    const search = useSearchContext()
+    const loading = useLoadingContext()
+
     function useAlertContext() {
         const [alertValue, setAlertValue] = React.useState({
             severity: 'none',
@@ -68,8 +74,10 @@ export default function useApplicationContext() {
         const api = useApi()
 
         function search() {
+            loading.clientsView.setLoading(true)
             api.get(`/client?query=${JSON.stringify(filterValue)}`).then(
                 (response) => {
+                    loading.clientsView.setLoading(false)
                     setClientsValue(response.data.clients)
                 }
             )
@@ -84,10 +92,22 @@ export default function useApplicationContext() {
         }
     }
 
+    function useLoadingContext() {
+        const [clientsView, setClientsView] = React.useState(false)
+
+        return {
+            clientsView: {
+                value: clientsView,
+                setLoading: setClientsView,
+            },
+        }
+    }
+
     return {
-        alert: useAlertContext(),
-        clientId: useClientIdContext(),
-        modal: useModalContext(),
-        search: useSearchContext(),
+        alert,
+        clientId,
+        modal,
+        search,
+        loading,
     }
 }

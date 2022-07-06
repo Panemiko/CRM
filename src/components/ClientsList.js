@@ -20,19 +20,21 @@ const LoadingContainer = styled.div`
 
 export default function ClientsList() {
     const [loading, setLoading] = React.useState(false)
-    const { search } = React.useContext(Context)
+    const { search, loading: loadingContext } = React.useContext(Context)
 
     React.useEffect(() => {
-        setLoading(true)
         search.search()
-        setLoading(false)
     }, [])
+
+    React.useEffect(() => {
+        setLoading(loadingContext.clientsView.value)
+    }, [loadingContext.clientsView.value])
 
     return (
         <ClientsContainer>
             {loading && (
                 <LoadingContainer>
-                    <CircularProgress />
+                    <CircularProgress color='primary' />
                 </LoadingContainer>
             )}
             {search.clients.map((client, index) => (
