@@ -8,7 +8,10 @@ export default function useAlert() {
 
     function setAlert(severity, message) {
         setAlertRaw({ severity, message })
-        setTimeout(() => setAlert({ severity: 'none', message: 'none' }), 5000)
+        setTimeout(
+            () => setAlertRaw({ severity: 'none', message: 'none' }),
+            5000
+        )
     }
 
     function handleAlert() {

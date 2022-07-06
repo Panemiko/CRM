@@ -12,5 +12,9 @@ export default function useModal() {
         }
     }
 
-    return { modal, setModal, registerModal }
+    function closeModal() {
+        setModal('none')
+    }
+
+    return { modal, setModal, registerModal, closeModal }
 }

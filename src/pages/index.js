@@ -11,6 +11,7 @@ import SearchClients from '@components/SearchClients'
 import Context from '@contexts/Context'
 import useAlert from '@hooks/useAlert'
 import useModal from '@hooks/useModal'
+import useSearch from '@hooks/useSearch'
 
 const PageContainer = styled.main`
     height: 100vh;
@@ -32,11 +33,16 @@ const Header = styled.header`
 
 export default function Home() {
     const { alert, setAlert, handleAlert } = useAlert()
-    const { modal, setModal, registerModal } = useModal()
+    const { modal, setModal, registerModal, closeModal } = useModal()
+    const { filter, setFilter, clients, setClients, search } = useSearch()
 
     return (
         <Context.Provider
-            value={{ alert: { alert, setAlert }, modal: { modal, setModal } }}
+            value={{
+                alert: { alert, setAlert },
+                modal: { modal, setModal, closeModal },
+                search: { filter, setFilter, clients, setClients, search },
+            }}
         >
             <Page title='Clientes' description='Listagem de clientes'>
                 <Modal {...registerModal('register')}>
