@@ -8,6 +8,9 @@ export default class GetClientUseCase {
             },
             take: 50,
             skip: page * 50,
+            orderBy: {
+                name: 'asc',
+            },
         })
 
         return { code: 200, content: { clients } }
