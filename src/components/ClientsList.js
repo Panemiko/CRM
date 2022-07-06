@@ -2,7 +2,7 @@ import React from 'react'
 import styled from '@emotion/styled'
 import CircularProgress from '@mui/material/CircularProgress'
 import ClientView from '@components/ClientView'
-import useApi from '@hooks/useApi'
+import Context from '@contexts/Context'
 
 const ClientsContainer = styled.ol`
     height: 80vh;
@@ -19,20 +19,14 @@ const LoadingContainer = styled.div`
 `
 
 export default function ClientsList() {
-    const [clients, setClients] = React.useState([])
     const [loading, setLoading] = React.useState(false)
-    const api = useApi()
+    const { search } = React.useContext(Context)
 
-    function getClients() {
+    React.useEffect(() => {
         setLoading(true)
-
-        api.get('/client').then((response) => {
-            setLoading(false)
-            setClients(response.data.clients)
-        })
-    }
-
-    React.useEffect(getClients, [])
+        search.search()
+        setLoading(false)
+    }, [])
 
     return (
         <ClientsContainer>
@@ -41,7 +35,7 @@ export default function ClientsList() {
                     <CircularProgress />
                 </LoadingContainer>
             )}
-            {clients.map((client, index) => (
+            {search.clients.map((client, index) => (
                 <ClientView
                     key={index}
                     clientName={client.name}

@@ -2,11 +2,11 @@ import React from 'react'
 import Typography from '@mui/material/Typography'
 import ClientForm from '@components/ClientForm'
 import useApi from '@hooks/useApi'
-import AlertContext from '@contexts/AlertContext'
+import Context from '@contexts/Context'
 
 export default function RegisterForm() {
     const api = useApi()
-    const alertContext = React.useContext(AlertContext)
+    const { alert, modal, search } = React.useContext(Context)
 
     async function registerClient(client) {
         client.birth =
@@ -17,16 +17,17 @@ export default function RegisterForm() {
         try {
             const response = await api.post('/client', { client })
 
-            alertContext.setAlert({
-                severity: 'success',
-                message: `Cliente ${response.data.client.name} criado`,
-            })
+            alert.setAlert(
+                'success',
+                `Cliente '${response.data.client.name}' criado`
+            )
+
+            search.search()
         } catch (err) {
-            alertContext.setAlert({
-                severity: 'error',
-                message: 'Ocorreu um erro interno',
-            })
+            alert.setAlert('error', 'Ocorreu um erro interno')
         }
+
+        modal.closeModal()
     }
 
     return (
