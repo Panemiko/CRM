@@ -22,13 +22,15 @@ const StyledField = styled(TextField)`
 
 export default function ClientForm(props) {
     const { load, onSubmit, action } = props
-    const { register, handleSubmit, setValue } = useForm()
+    const { register, handleSubmit } = useForm({
+        defaultValues: load,
+    })
     const [birth, setBirth] = React.useState(null)
     const [loading, setLoading] = React.useState(false)
 
-    React.useEffect(() => {
-        if (load) setValue(load)
-    }, [])
+    // React.useEffect(() => {
+    //     reset(load)
+    // }, [load])
 
     async function submitForm(data) {
         setLoading(true)
@@ -56,6 +58,7 @@ export default function ClientForm(props) {
             <DatePicker
                 label='Nascimento'
                 inputFormat='dd/MM/yyyy'
+                openTo='year'
                 value={birth}
                 onChange={setBirth}
                 renderInput={(params) => (

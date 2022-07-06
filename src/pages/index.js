@@ -9,9 +9,8 @@ import ClientsList from '@components/ClientsList'
 import RegisterForm from '@components/RegisterForm'
 import SearchClients from '@components/SearchClients'
 import Context from '@contexts/Context'
-import useAlert from '@hooks/useAlert'
-import useModal from '@hooks/useModal'
-import useSearch from '@hooks/useSearch'
+import EditForm from '@components/EditForm'
+import useApplicationContext from '@hooks/useApplicationContext'
 
 const PageContainer = styled.main`
     height: 100vh;
@@ -32,32 +31,30 @@ const Header = styled.header`
 `
 
 export default function Home() {
-    const { alert, setAlert, handleAlert } = useAlert()
-    const { modal, setModal, registerModal, closeModal } = useModal()
-    const { filter, setFilter, clients, setClients, search } = useSearch()
+    const applicationContext = useApplicationContext()
+    const { modal, alert } = applicationContext
 
     return (
-        <Context.Provider
-            value={{
-                alert: { alert, setAlert },
-                modal: { modal, setModal, closeModal },
-                search: { filter, setFilter, clients, setClients, search },
-            }}
-        >
+        <Context.Provider value={applicationContext}>
             <Page title='Clientes' description='Listagem de clientes'>
-                <Modal {...registerModal('register')}>
+                <Modal {...modal.registerModal('register')}>
                     <ModalWindow>
                         <RegisterForm />
                     </ModalWindow>
                 </Modal>
+                <Modal {...modal.registerModal('edit')}>
+                    <ModalWindow>
+                        <EditForm />
+                    </ModalWindow>
+                </Modal>
                 <PageContainer>
-                    <Alert {...handleAlert()} />
+                    <Alert {...alert.handleAlert()} />
                     <ContentContainer>
                         <Header>
                             <SearchClients />
                             <div>
                                 <Button
-                                    onClick={() => setModal('register')}
+                                    onClick={() => modal.setModal('register')}
                                     variant='contained'
                                 >
                                     Criar cliente
