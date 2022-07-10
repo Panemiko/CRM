@@ -2,7 +2,11 @@ import React from 'react'
 import styled from '@emotion/styled'
 import Typography from '@mui/material/Typography'
 import IconButton from '@mui/material/IconButton'
-import { MdEdit as EditIcon, MdDelete as DeleteIcon } from 'react-icons/md'
+import {
+    MdEdit as EditIcon,
+    MdNotes as NoteIcon,
+    MdDelete as DeleteIcon,
+} from 'react-icons/md'
 import Context from '@contexts/Context'
 
 const ClientContainer = styled.li`
@@ -33,6 +37,11 @@ export default function ClientView(props) {
         modal.setModal('edit')
     })
 
+    const openNotes = React.useCallback(() => {
+        clientIdContext.setClientId(clientId)
+        modal.setModal('note')
+    })
+
     const openDeleteConfirmation = React.useCallback(() => {
         clientIdContext.setClientId(clientId)
         modal.setModal('delete')
@@ -50,6 +59,9 @@ export default function ClientView(props) {
                 <ActionsContainer>
                     <IconButton size='small' onClick={openEdit}>
                         <EditIcon />
+                    </IconButton>
+                    <IconButton size='small' onClick={openNotes}>
+                        <NoteIcon />
                     </IconButton>
                     <IconButton
                         size='small'

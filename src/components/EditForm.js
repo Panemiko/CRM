@@ -81,7 +81,7 @@ export default function EditForm() {
     return (
         <>
             <Typography
-                style={{ marginBottom: '24px' }}
+                style={{ marginBottom: '32px', textAlign: 'center' }}
                 variant='h4'
                 component='h2'
             >

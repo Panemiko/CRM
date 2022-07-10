@@ -6,6 +6,8 @@ import RadioGroup from '@mui/material/RadioGroup'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import Radio from '@mui/material/Radio'
 import LoadingButton from '@mui/lab/LoadingButton'
+import { Button } from '@mui/material'
+import Context from '@contexts/Context'
 
 const FormContainer = styled.form`
     display: flex;
@@ -18,8 +20,17 @@ const StyledField = styled(TextField)`
     width: 320px;
 `
 
+const ButtonContainer = styled.div`
+    width: 100%;
+    margin-top: 24px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+`
+
 export default function ClientForm(props) {
     const { load, onSubmit, action } = props
+    const { modal } = React.useContext(Context)
     const [loading, setLoading] = React.useState(false)
     const [shrink, setShrink] = React.useState(undefined)
     const [birthFocused, setBirthFocused] = React.useState(false)
@@ -45,6 +56,10 @@ export default function ClientForm(props) {
         setLoading(true)
         onSubmit(values)
         setLoading(false)
+    })
+
+    const handleCancel = React.useCallback(() => {
+        modal.closeModal()
     })
 
     return (
@@ -165,17 +180,17 @@ export default function ClientForm(props) {
                     />
                 </RadioGroup>
             </div>
-            <LoadingButton
-                loading={loading}
-                loadingIndicator='Enviando'
-                variant='contained'
-                type='submit'
-                style={{
-                    maxWidth: 'fit-content',
-                }}
-            >
-                {action}
-            </LoadingButton>
+            <ButtonContainer>
+                <Button onClick={handleCancel}>Cancelar</Button>
+                <LoadingButton
+                    loading={loading}
+                    loadingIndicator='Enviando'
+                    variant='contained'
+                    type='submit'
+                >
+                    {action}
+                </LoadingButton>
+            </ButtonContainer>
         </FormContainer>
     )
 }

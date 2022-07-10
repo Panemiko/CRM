@@ -13,6 +13,7 @@ import EditForm from '@components/EditForm'
 import DeleteConfirmation from '@components/DeleteConfirmation'
 import useApplicationContext from '@hooks/useApplicationContext'
 import SwipePage from '@components/SwipePage'
+import NotesForm from '@components/NotesForm'
 
 const PageContainer = styled.main`
     height: 100vh;
@@ -53,6 +54,11 @@ export default function Home() {
                     <Modal {...modal.registerModal('edit')}>
                         <ModalWindow>
                             <EditForm />
+                        </ModalWindow>
+                    </Modal>
+                    <Modal {...modal.registerModal('note')}>
+                        <ModalWindow>
+                            <NotesForm />
                         </ModalWindow>
                     </Modal>
                     <Modal {...modal.registerModal('delete')}>
