@@ -1,12 +1,10 @@
 import React from 'react'
 import styled from '@emotion/styled'
-import { useForm } from 'react-hook-form'
 import TextField from '@mui/material/TextField'
 import FormLabel from '@mui/material/FormLabel'
 import RadioGroup from '@mui/material/RadioGroup'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import Radio from '@mui/material/Radio'
-import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import LoadingButton from '@mui/lab/LoadingButton'
 
 const FormContainer = styled.form`
@@ -22,54 +20,70 @@ const StyledField = styled(TextField)`
 
 export default function ClientForm(props) {
     const { load, onSubmit, action } = props
-    const { register, handleSubmit } = useForm({
-        defaultValues: load,
-    })
-    const [birth, setBirth] = React.useState(null)
     const [loading, setLoading] = React.useState(false)
+    const [shrink, setShrink] = React.useState(undefined)
+    const [birthFocused, setBirthFocused] = React.useState(false)
+    const [values, setValues] = React.useState({
+        name: '',
+        address: '',
+        birth: '',
+        phone: '',
+        occupation: '',
+        gender: 'Masculino',
+        maritalState: 'Solteiro',
+    })
 
-    // React.useEffect(() => {
-    //     reset(load)
-    // }, [load])
+    React.useEffect(() => {
+        if (load && Object.keys(load).length !== 0) {
+            setShrink(true)
+            setValues(load)
+        } else setShrink(undefined)
+    }, [load])
 
-    async function submitForm(data) {
+    const submitForm = React.useCallback((e) => {
+        e.preventDefault()
         setLoading(true)
-        onSubmit(data)
+        onSubmit(values)
         setLoading(false)
-    }
+    })
 
     return (
-        <FormContainer onSubmit={handleSubmit(submitForm)}>
+        <FormContainer onSubmit={submitForm}>
             <StyledField
                 id='name'
                 label='Nome'
                 required
                 size='small'
                 autoComplete='off'
-                {...register('name')}
+                InputLabelProps={{ shrink }}
+                value={values.name}
+                onChange={(e) => setValues({ ...values, name: e.target.value })}
             />
             <StyledField
                 id='address'
                 label='Endereço'
                 size='small'
                 autoComplete='off'
-                {...register('address')}
+                InputLabelProps={{ shrink }}
+                value={values.address}
+                onChange={(e) =>
+                    setValues({ ...values, address: e.target.value })
+                }
             />
-            <DatePicker
+            <StyledField
+                id='birth'
+                type={values.birth === '' && !birthFocused ? 'text' : 'date'}
                 label='Nascimento'
-                inputFormat='dd/MM/yyyy'
-                openTo='year'
-                value={birth}
-                onChange={setBirth}
-                renderInput={(params) => (
-                    <StyledField
-                        id='birth'
-                        size='small'
-                        autoComplete='off'
-                        {...params}
-                        {...register('birth')}
-                    />
-                )}
+                size='small'
+                autoComplete='off'
+                InputLabelProps={{ shrink }}
+                focused={birthFocused}
+                onFocus={() => setBirthFocused(true)}
+                onBlur={() => setBirthFocused(false)}
+                value={values.birth}
+                onChange={(e) =>
+                    setValues({ ...values, birth: e.target.value })
+                }
             />
             <StyledField
                 id='phone'
@@ -77,64 +91,77 @@ export default function ClientForm(props) {
                 label='Telefone'
                 size='small'
                 autoComplete='off'
-                {...register('phone')}
+                InputLabelProps={{ shrink }}
+                value={values.phone}
+                onChange={(e) =>
+                    setValues({ ...values, phone: e.target.value })
+                }
             />
             <StyledField
                 id='occupation'
                 label='Ocupação'
                 size='small'
                 autoComplete='off'
-                {...register('occupation')}
+                InputLabelProps={{ shrink }}
+                value={values.occupation}
+                onChange={(e) =>
+                    setValues({ ...values, occupation: e.target.value })
+                }
             />
             <div>
                 <FormLabel>Gênero</FormLabel>
-                <RadioGroup defaultValue='Masculino' row>
+                <RadioGroup
+                    value={values.gender}
+                    onChange={(e) =>
+                        setValues({ ...values, gender: e.target.value })
+                    }
+                    row
+                >
                     <FormControlLabel
                         value='Masculino'
                         control={<Radio />}
                         label='Masculino'
-                        {...register('gender')}
                     />
                     <FormControlLabel
                         value='Feminino'
                         control={<Radio />}
                         label='Feminino'
-                        {...register('gender')}
                     />
                 </RadioGroup>
             </div>
             <div>
                 <FormLabel>Estado Civil</FormLabel>
-                <RadioGroup defaultValue='Solteiro' row>
+                <RadioGroup
+                    value={values.maritalState}
+                    onChange={(e) =>
+                        setValues({ ...values, maritalState: e.target.value })
+                    }
+                    row
+                >
                     <FormControlLabel
                         value='Solteiro'
                         control={<Radio />}
                         label='Solteiro(a)'
-                        {...register('maritalState')}
                     />
                     <FormControlLabel
                         value='Casado'
                         control={<Radio />}
                         label='Casado(a)'
-                        {...register('maritalState')}
                     />
                     <FormControlLabel
                         value='Separado'
                         control={<Radio />}
                         label='Separado(a)'
-                        {...register('maritalState')}
                     />
                     <FormControlLabel
                         value='Divorciado'
                         control={<Radio />}
                         label='Divorciado(a)'
-                        {...register('maritalState')}
                     />
                     <FormControlLabel
                         value='Viuvo'
                         control={<Radio />}
                         label='Viúvo(a)'
-                        {...register('maritalState')}
                     />
                 </RadioGroup>
             </div>

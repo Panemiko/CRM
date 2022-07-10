@@ -1,31 +1,59 @@
 import React from 'react'
+import { format } from 'date-fns'
 import Typography from '@mui/material/Typography'
 import ClientForm from '@components/ClientForm'
 import useApi from '@hooks/useApi'
 import Context from '@contexts/Context'
 
 export default function EditForm() {
+    const { alert, modal, search, clientId } = React.useContext(Context)
     const [client, setClient] = React.useState({})
     const api = useApi()
-    const { alert, modal, search, clientId } = React.useContext(Context)
-
-    async function loadClient() {
-        const response = await api.get(
-            `/client?query=${JSON.stringify({ id: clientId.value })}`
-        )
-
-        const clientResponse = response.data.clients[0]
-
-        new Date(clientResponse.birth).toISOString(10, 8)
-
-        setClient(response.data.clients[0])
-    }
 
     React.useEffect(() => {
-        loadClient()
+        api.get(
+            `/client?query=${JSON.stringify({
+                id: { equals: clientId.value },
+            })}`
+        )
+            .then((response) => {
+                const clientResponse = response.data.clients[0]
+
+                const birthDate = new Date(clientResponse.birth || undefined)
+
+                clientResponse.birth =
+                    clientResponse.birth &&
+                    format(
+                        birthDate.setDate(birthDate.getDate() + 1),
+                        'yyyy-MM-dd'
+                    )
+
+                const {
+                    name,
+                    address,
+                    birth,
+                    phone,
+                    occupation,
+                    gender,
+                    maritalState,
+                } = clientResponse
+
+                setClient({
+                    name,
+                    address,
+                    birth,
+                    phone,
+                    occupation,
+                    gender,
+                    maritalState,
+                })
+            })
+            .catch(() => {
+                alert.setAlert('error', 'Ocorreu um erro interno')
+            })
     }, [])
 
-    async function editClient(client) {
+    const editClient = React.useCallback(async (client) => {
         client.birth =
             client.birth.length !== 0
                 ? new Date(client.birth).toISOString()
@@ -48,7 +76,7 @@ export default function EditForm() {
         }
 
         modal.closeModal()
-    }
+    })
 
     return (
         <>

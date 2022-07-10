@@ -20,13 +20,13 @@ const ClientContainer = styled.li`
 
 export default function ClientView(props) {
     const { clientName, clientId } = props
-    const { modal, clientId: client } = React.useContext(Context)
+    const { modal, clientId: clientIdContext } = React.useContext(Context)
     const [hovered, setHovered] = React.useState(false)
 
-    async function openEdit() {
-        client.setClientId(clientId)
+    const openEdit = React.useCallback(() => {
+        clientIdContext.setClientId(clientId)
         modal.setModal('edit')
-    }
+    })
 
     return (
         <ClientContainer

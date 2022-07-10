@@ -8,27 +8,27 @@ export default function RegisterForm() {
     const api = useApi()
     const { alert, modal, search } = React.useContext(Context)
 
-    async function registerClient(client) {
+    const registerClient = React.useCallback((client) => {
         client.birth =
             client.birth.length !== 0
                 ? new Date(client.birth).toISOString()
                 : undefined
 
-        try {
-            const response = await api.post('/client', { client })
+        api.post('/client', { client })
+            .then((response) => {
+                alert.setAlert(
+                    'success',
+                    `Cliente '${response.data.client.name}' criado`
+                )
 
-            alert.setAlert(
-                'success',
-                `Cliente '${response.data.client.name}' criado`
-            )
-
-            search.search()
-        } catch (err) {
-            alert.setAlert('error', 'Ocorreu um erro interno')
-        }
+                search.search()
+            })
+            .catch(() => {
+                alert.setAlert('error', 'Ocorreu um erro interno')
+            })
 
         modal.closeModal()
-    }
+    })
 
     return (
         <>
