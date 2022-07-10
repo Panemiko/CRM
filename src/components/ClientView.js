@@ -2,7 +2,7 @@ import React from 'react'
 import styled from '@emotion/styled'
 import Typography from '@mui/material/Typography'
 import IconButton from '@mui/material/IconButton'
-import { MdEdit as EditIcon } from 'react-icons/md'
+import { MdEdit as EditIcon, MdDelete as DeleteIcon } from 'react-icons/md'
 import Context from '@contexts/Context'
 
 const ClientContainer = styled.li`
@@ -18,6 +18,11 @@ const ClientContainer = styled.li`
     }
 `
 
+const ActionsContainer = styled.div`
+    display: flex;
+    gap: 8px;
+`
+
 export default function ClientView(props) {
     const { clientName, clientId } = props
     const { modal, clientId: clientIdContext } = React.useContext(Context)
@@ -26,6 +31,11 @@ export default function ClientView(props) {
     const openEdit = React.useCallback(() => {
         clientIdContext.setClientId(clientId)
         modal.setModal('edit')
+    })
+
+    const openDeleteConfirmation = React.useCallback(() => {
+        clientIdContext.setClientId(clientId)
+        modal.setModal('delete')
     })
 
     return (
@@ -37,11 +47,18 @@ export default function ClientView(props) {
                 {clientName}
             </Typography>
             {hovered && (
-                <div>
+                <ActionsContainer>
                     <IconButton size='small' onClick={openEdit}>
                         <EditIcon />
                     </IconButton>
-                </div>
+                    <IconButton
+                        size='small'
+                        color='error'
+                        onClick={openDeleteConfirmation}
+                    >
+                        <DeleteIcon />
+                    </IconButton>
+                </ActionsContainer>
             )}
         </ClientContainer>
     )

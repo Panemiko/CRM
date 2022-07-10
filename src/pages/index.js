@@ -10,6 +10,7 @@ import RegisterForm from '@components/RegisterForm'
 import SearchClients from '@components/SearchClients'
 import Context from '@contexts/Context'
 import EditForm from '@components/EditForm'
+import DeleteConfirmation from '@components/DeleteConfirmation'
 import useApplicationContext from '@hooks/useApplicationContext'
 import SwipePage from '@components/SwipePage'
 
@@ -52,6 +53,11 @@ export default function Home() {
                     <Modal {...modal.registerModal('edit')}>
                         <ModalWindow>
                             <EditForm />
+                        </ModalWindow>
+                    </Modal>
+                    <Modal {...modal.registerModal('delete')}>
+                        <ModalWindow>
+                            <DeleteConfirmation />
                         </ModalWindow>
                     </Modal>
                     <ContentContainer>
