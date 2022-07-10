@@ -70,18 +70,21 @@ export default function useApplicationContext() {
 
     function useSearchContext() {
         const [filterValue, setFilterValue] = React.useState({})
+        const [page, setPage] = React.useState(0)
         const [clientsValue, setClientsValue] = React.useState([])
         const api = useApi()
 
         function search() {
             loading.clientsView.setLoading(true)
-            api.get(`/client?query=${JSON.stringify(filterValue)}`).then(
-                (response) => {
-                    loading.clientsView.setLoading(false)
-                    setClientsValue(response.data.clients)
-                }
-            )
+            api.get(
+                `/client?page=${page}&query=${JSON.stringify(filterValue)}`
+            ).then((response) => {
+                loading.clientsView.setLoading(false)
+                setClientsValue(response.data.clients)
+            })
         }
+
+        React.useEffect(search, [filterValue, page])
 
         return {
             filter: filterValue,
@@ -89,6 +92,8 @@ export default function useApplicationContext() {
             clients: clientsValue,
             setClients: setClientsValue,
             search,
+            page,
+            setPage,
         }
     }
 

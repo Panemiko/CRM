@@ -11,6 +11,7 @@ import SearchClients from '@components/SearchClients'
 import Context from '@contexts/Context'
 import EditForm from '@components/EditForm'
 import useApplicationContext from '@hooks/useApplicationContext'
+import SwipePage from '@components/SwipePage'
 
 const PageContainer = styled.main`
     height: 100vh;
@@ -30,6 +31,10 @@ const Header = styled.header`
     justify-content: space-between;
 `
 
+const SearchHeader = styled.div`
+    display: flex;
+`
+
 export default function Home() {
     const applicationContext = useApplicationContext()
     const { modal, alert } = applicationContext
@@ -37,21 +42,24 @@ export default function Home() {
     return (
         <Context.Provider value={applicationContext}>
             <Page title='Clientes' description='Listagem de clientes'>
-                <Modal {...modal.registerModal('register')}>
-                    <ModalWindow>
-                        <RegisterForm />
-                    </ModalWindow>
-                </Modal>
-                <Modal {...modal.registerModal('edit')}>
-                    <ModalWindow>
-                        <EditForm />
-                    </ModalWindow>
-                </Modal>
                 <PageContainer>
                     <Alert {...alert.handleAlert()} />
+                    <Modal {...modal.registerModal('register')}>
+                        <ModalWindow>
+                            <RegisterForm />
+                        </ModalWindow>
+                    </Modal>
+                    <Modal {...modal.registerModal('edit')}>
+                        <ModalWindow>
+                            <EditForm />
+                        </ModalWindow>
+                    </Modal>
                     <ContentContainer>
                         <Header>
-                            <SearchClients />
+                            <SearchHeader>
+                                <SearchClients />
+                                <SwipePage />
+                            </SearchHeader>
                             <div>
                                 <Button
                                     onClick={() => modal.setModal('register')}

@@ -5,19 +5,24 @@ import { MdSearch as SearchIcon } from 'react-icons/md'
 import Context from '@contexts/Context'
 
 export default function SearchClients() {
-    const { search } = React.useContext(Context)
+    const { search: searchContext } = React.useContext(Context)
+    const [search, setSearch] = React.useState('')
 
-    function handleKeyDown(e) {
-        if (e.key === 'Enter') search.search()
-    }
+    const updateFilter = React.useCallback(() => {
+        searchContext.setFilter(
+            search !== ''
+                ? {
+                      name: {
+                          contains: search,
+                      },
+                  }
+                : {}
+        )
+    })
 
-    function updateSearch(e) {
-        search.setFilter({
-            name: {
-                contains: e.target.value,
-            },
-        })
-    }
+    const handleKeyDown = React.useCallback((e) => {
+        if (e.key === 'Enter') updateFilter()
+    })
 
     return (
         <div>
@@ -25,10 +30,11 @@ export default function SearchClients() {
                 label='Pesquisar'
                 size='small'
                 style={{ marginRight: '8px' }}
-                onChange={updateSearch}
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
                 onKeyDown={handleKeyDown}
             />
-            <IconButton onClick={search.search} color='primary'>
+            <IconButton onClick={updateFilter} color='primary'>
                 <SearchIcon />
             </IconButton>
         </div>
