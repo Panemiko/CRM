@@ -3,6 +3,7 @@ import styled from '@emotion/styled'
 import CircularProgress from '@mui/material/CircularProgress'
 import ClientView from '@components/ClientView'
 import Context from '@contexts/Context'
+import { Typography } from '@mui/material'
 
 const ClientsContainer = styled.ol`
     height: 80vh;
@@ -11,7 +12,7 @@ const ClientsContainer = styled.ol`
     overflow: auto;
 `
 
-const LoadingContainer = styled.div`
+const InformationContainer = styled.div`
     height: 100%;
     display: flex;
     justify-content: center;
@@ -19,8 +20,8 @@ const LoadingContainer = styled.div`
 `
 
 export default function ClientsList() {
-    const [loading, setLoading] = React.useState(false)
     const { search, loading: loadingContext } = React.useContext(Context)
+    const [loading, setLoading] = React.useState(false)
 
     React.useEffect(() => {
         search.search()
@@ -33,9 +34,14 @@ export default function ClientsList() {
     return (
         <ClientsContainer>
             {loading && (
-                <LoadingContainer>
+                <InformationContainer>
                     <CircularProgress color='primary' />
-                </LoadingContainer>
+                </InformationContainer>
+            )}
+            {search.clients.length === 0 && !loading && (
+                <InformationContainer>
+                    <Typography>Nenhum cliente encontrado</Typography>
+                </InformationContainer>
             )}
             {search.clients.map((client, index) => (
                 <ClientView
