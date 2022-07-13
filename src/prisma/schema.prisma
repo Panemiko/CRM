@@ -15,19 +15,13 @@ model Client {
   createdAt    DateTime     @default(now())
   updatedAt    DateTime     @updatedAt
   name         String       @default("")
+  cpf          String       @default("")
   address      String       @default("")
-  birth        DateTime     @default(now())
-  gender       Gender       @default(Masculino)
-  maritalState MaritalState @default(Solteiro)
   phone        String       @default("")
   occupation   String       @default("")
-  notes        String       @default("")
-}
-
-model Location {
-  id   String @id @unique @default(uuid())
-  nome String @unique @default("")
-  uf   State @default(RS)
+  gender       Gender       @default(Masculino)
+  maritalState MaritalState @default(Solteiro)
+  notes        String       @db.Text
 }
 
 enum Gender {
@@ -41,34 +35,4 @@ enum MaritalState {
   Separado
   Divorciado
   Viuvo
-}
-
-enum State {
-  AC
-  AL
-  AP
-  AM
-  BA
-  CE
-  ES
-  GO
-  MA
-  MT
-  MS
-  MG
-  PA
-  PB
-  PR
-  PE
-  PI
-  RJ
-  RN
-  RS
-  RO
-  RR
-  SC
-  SP
-  SE
-  TO
-  DF
 }

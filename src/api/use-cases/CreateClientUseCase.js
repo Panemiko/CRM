@@ -4,6 +4,7 @@ export default class CreateClientUseCase {
     async execute(clientSanitized) {
         const client = await prisma.client.create({
             data: {
+                notes: '',
                 ...clientSanitized,
             },
         })
