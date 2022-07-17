@@ -33,11 +33,10 @@ export default function ClientForm(props) {
     const { modal } = React.useContext(Context)
     const [loading, setLoading] = React.useState(false)
     const [shrink, setShrink] = React.useState(undefined)
-    const [birthFocused, setBirthFocused] = React.useState(false)
     const [values, setValues] = React.useState({
         name: '',
         address: '',
-        birth: '',
+        cpf: '',
         phone: '',
         occupation: '',
         gender: 'Masculino',
@@ -86,19 +85,13 @@ export default function ClientForm(props) {
                 }
             />
             <StyledField
-                id='birth'
-                type={values.birth === '' && !birthFocused ? 'text' : 'date'}
-                label='Nascimento'
+                id='cpf'
+                label='CPF'
                 size='small'
                 autoComplete='off'
                 InputLabelProps={{ shrink }}
-                focused={birthFocused}
-                onFocus={() => setBirthFocused(true)}
-                onBlur={() => setBirthFocused(false)}
-                value={values.birth}
-                onChange={(e) =>
-                    setValues({ ...values, birth: e.target.value })
-                }
+                value={values.cpf}
+                onChange={(e) => setValues({ ...values, cpf: e.target.value })}
             />
             <StyledField
                 id='phone'

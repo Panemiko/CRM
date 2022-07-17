@@ -31,7 +31,7 @@ export default function EditForm() {
                 const {
                     name,
                     address,
-                    birth,
+                    cpf,
                     phone,
                     occupation,
                     gender,
@@ -41,7 +41,7 @@ export default function EditForm() {
                 setClient({
                     name,
                     address,
-                    birth,
+                    cpf,
                     phone,
                     occupation,
                     gender,
